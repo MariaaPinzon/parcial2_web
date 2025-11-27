@@ -1,15 +1,22 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {Body,Controller,Get,Post,UseGuards} from '@nestjs/common';
 import { LocationsService } from './locations.service';
 import { CreateLocationDto } from './dto/create-location.dto';
-import { UpdateLocationDto } from './dto/update-location.dto';
+import { ApiTokenGuard } from 'src/guards/api-token.guard';
 
-@Controller('locations')
+@UseGuards(ApiTokenGuard) // para las rutas privadas
+@Controller('location')  
 export class LocationsController {
   constructor(private readonly locationsService: LocationsService) {}
 
+  //POST /api/location
   @Post()
   create(@Body() createLocationDto: CreateLocationDto) {
     return this.locationsService.create(createLocationDto);
   }
 
+  //GET /api/location
+  @Get()
+  findAll() {
+    return this.locationsService.findAllWithFavVisitors();
+  }
 }

@@ -6,9 +6,9 @@ import { ApiProperty } from '@nestjs/swagger';
 export class Token {
 
 
-    @ApiProperty({example:'absjas', description:'Identificador único del la llave'})
+    @ApiProperty({example:'26b071e4-75f9-4897-bec8-0591804360e9', description:'Identificador único del la llave'})
     @PrimaryGeneratedColumn('uuid')
-    id: number;
+    id: string;
 
     @ApiProperty({example:'abcdefg', description:'token unico de la api'})
     @Column({unique:true})

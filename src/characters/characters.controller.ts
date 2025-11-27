@@ -1,9 +1,10 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {Body,Controller,Get,Param,ParseIntPipe,Patch,Post,UseGuards,} from '@nestjs/common';
 import { CharactersService } from './characters.service';
 import { CreateCharacterDto } from './dto/create-character.dto';
-import { UpdateCharacterDto } from './dto/update-character.dto';
+import { ApiTokenGuard } from 'src/guards/api-token.guard';
 
-@Controller('characters')
+@UseGuards(ApiTokenGuard) // para las rutas privadas
+@Controller('character') 
 export class CharactersController {
   constructor(private readonly charactersService: CharactersService) {}
 
@@ -12,15 +13,16 @@ export class CharactersController {
     return this.charactersService.create(createCharacterDto);
   }
 
-  // PATCH /character/:id/favorites/:locationId
   @Patch(':id/favorites/:locationId')
   addFavoriteLocation(
-    @Param('id') id:number,
-    @Param('locationId') locationId:number
-  ){
-    return this.charactersService.addFavoriteLocation(id,locationId)
+    @Param('id', ParseIntPipe) id: number,
+    @Param('locationId', ParseIntPipe) locationId: number,
+  ) {
+    return this.charactersService.addFavoriteLocation(id, locationId);
   }
-  
 
-  
+  @Get(':id/taxes')
+  getTaxes(@Param('id', ParseIntPipe) id: number) {
+    return this.charactersService.calculateTaxes(id);
+  }
 }

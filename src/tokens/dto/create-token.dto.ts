@@ -1,8 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsOptional, IsString } from 'class-validator';
-// create para post /token se va a usar en el service
-// valida que reqleft es mayor a 0
-// valida que este activo
+import { IsOptional, IsString, IsPositive } from 'class-validator';
+
 
 export class CreateTokenDto {
 
@@ -16,5 +14,6 @@ export class CreateTokenDto {
 
     @ApiProperty({example: 10, description: 'cantidad de peticiones que le quedan a la api'})
     @IsOptional()
+    @IsPositive()
     reqLeft?:number;
 }
