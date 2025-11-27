@@ -3,6 +3,9 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { TokensModule } from './tokens/tokens.module';
+import { CharactersModule } from './characters/characters.module';
+import { LocationsModule } from './locations/locations.module';
 
 @Module({
   imports: [
@@ -15,8 +18,12 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       username: process.env.DB_USERNAME,
       password: process.env.DB_PASSWORD,
       autoLoadEntities: true,
-      synchronize: true, // SOLO EN DESARROLLO
-    })
+      synchronize: true,
+      ssl: process.env.STAGE === 'prod' ? true : false,
+    }),
+    TokensModule,
+    CharactersModule,
+    LocationsModule
   ],
   controllers: [AppController],
   providers: [AppService],
